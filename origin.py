@@ -2,7 +2,13 @@ import requests
 import re
 import urllib
 import urllib2
+import urlparse
+import json
 from random import randint
+
+HTTP_200 = 200
+
+HTTP_302 = 302
 
 def dictprinter(d):
 	for key in d:
@@ -14,14 +20,22 @@ def random_string(length):
 
 class Origin():
 
-	auth_url = "https://signin.ea.com/p/originX/login?execution=e239813213s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html"
+	fid = None
+	jssessionid = None
 
 	user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
 
-	def __init__(self):
-		pass
+	def __init__(self, login, password):
+		self.login = login
+		self.password = password
+		self.cid = random_string(32)
 
-	def GET(self, url, params=None, headers=None):
+	def __GET(self, url, params=None, headers=None):
+
+		if headers is None:
+			headers = {}
+
+		headers["User-Agent"] = self.user_agent
 
 		response = requests.get(url, params=params, headers=headers, allow_redirects=False)
 
@@ -31,80 +45,187 @@ class Origin():
 
 		return response_code, response_html, response_headers
 
-	def POST(self, url, params, headers):
-		pass
+	def __POST(self, url, data=None, headers=None):
 
-	def auth(self, login, password):
+		response = requests.post(url, data=data, headers=headers)
+
+		response_code = response.status_code
+		response_headers = response.headers
+		response_html = response.text
+
+		return response_code, response_html, response_headers
 
 
-
-		url = "https://accounts.ea.com/connect/auth"
-
-		values = {
-			"response_type": "code",
-			"client_id": "ORIGIN_SPA_ID",
-			"display": "originXWeb/login",
-			"locale": "ru_RU",
-			"release_type": "prod",
-			"redirect_uri": "https://www.origin.com/views/login.html"
-		}
-
-		headers = {
-			"User-Agent": '''Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36''',
-			"Host": "accounts.ea.com",
-			"Connection": "keep-alive",
-			"Upgrade-Insecure-Requests": "1",
-			"Accept": '''text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8''',
-			"Referer": "https://www.origin.com/rus/ru-ru/store/battlefield/battlefield-v",
-			"Accept-Encoding": "gzip, deflate, br",
-			"Accept-Language": "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7"
-			#"Cookie": ": _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; _nx_mpcid=dbbf8fa0-1d6b-4646-8b74-6a302eb11475; utag_main=v_id:01687fa6c81f007ffeb1c4333f4403071014206900bd0$_sn:2$_ss:0$_st:1548335847090$ses_id:1548333559270%3Bexp-session$_pn:3%3Bexp-session"
-		}
-
-		#data = urllib.urlencode(values)
-
-		#req = urllib2.Request(url, data, headers)
-
-		#response = urllib2.urlopen(req)
-
-		#print (response.info())
-		import zlib
-
+	def __get_fid(self):
 		url = "https://accounts.ea.com/connect/auth?response_type=code&client_id=ORIGIN_SPA_ID&display=originXWeb/login&locale=ru_RU&release_type=prod&redirect_uri=https://www.origin.com/views/login.html"
-		response_code, response_html, response_headers = self.GET(url, headers=headers)
 
-		#response_code, response_html, response_headers = self.GET(url, headers=headers)
-		#decompressed_data = zlib.decompress(response_html, 16 + zlib.MAX_WBITS)
+		response_code, response_html, response_headers = self.__GET(url)
 
-		print("response_code: {0} response_html: {1}".format(response_code, response_html.encode("utf-8")))
+		if response_code == HTTP_302:
+			self.fid = urlparse.parse_qs(response_headers["Location"][response_headers["Location"].index("?")+1:])['fid'][0]
+			return response_headers["Location"]
+		else:
+			pass
 
+	def __get_JS_sessionid(self, location):
+		url = location
+
+		response_code, response_html, response_headers = self.__GET(url)
+
+		print "==============="
+		print "jssession"
+		print url
+		print response_code
 		dictprinter(response_headers)
 
-		#fid = re.search('''(?<=login\?fid=)\S+?(?=&)''', response_html)
+		if response_code == HTTP_302:
+			self.jssessionid = re.search("(?<=JSESSIONID=)[\S]+?(?=;)", response_headers["Set-Cookie"]).group(0)
+			return "{0}{1}".format("https://signin.ea.com", response_headers["Location"])
+		else:
+			pass
 
-		#print fid.group(0)
+	def __visit_auth_page(self, location):
+		url = location
 
-		'''
-		code, html, headers = self.GET(self.auth_url)
+		headers = {
+			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
+		}
 
-		dictprinter(headers)
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
 
-		cid = random_string(32)
+		print "==============="
+		print "visit auth page"
+		print url
+		print response_code
+		dictprinter(response_headers)
 
-		form_data = {
-			"email": login,
-			"password": password,
+		if response_code == HTTP_302:
+			self.jssessionid = re.search("(?<=JSESSIONID=)[\S]+?(?=;)", response_headers["Set-Cookie"]).group(0)
+			return response_headers["Location"]
+
+
+	def __post_auth_data(self, location):
+		url = location
+
+		headers = {
+			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
+		}
+
+		payload = {
+			"email": self.login,
+			"password": self.password,
 			"_eventId": "submit",
-			"cid": cid,
+			"cid": self.cid,
 			"showAgeUp": "true",
 			"googleCaptchaResponse": "",
 			"_rememberMe": "on"
 		}
-		'''
 
-origin = Origin()
+		response_code, response_html, response_headers = self.__POST(url, data=payload, headers=headers)
+
+		print "==============="
+		print "post auth data"
+		print url
+		print response_code
+		dictprinter(response_headers)
+		#print response_html
+
+		if response_code == HTTP_200:
+			location = re.search('''(?<=window\.location = \")\S+(?=\";)''', response_html).group(0)
+			print location
+			return location
+
+	def __get_sid(self, location):
+		url = location
+
+		headers = {
+			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
+		}
+
+		response_code, response_html, response_headers = self.__GET(url)
+
+		print "==============="
+		print "sid"
+		print url
+		print response_code
+		dictprinter(response_headers)
+
+		if response_code == HTTP_302:
+			self.sid = re.search('''(?<=sid=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
+			self.code = urlparse.parse_qs(response_headers["Location"][response_headers["Location"].index("?") + 1:])['code'][0]
+			print "sid: {0}".format(self.sid)
+			print "code: {0}".format(self.code)
+			return response_headers["Location"]
+		else:
+			pass
+
+	def __get_AWSELB(self, location):
+		url = location
+
+		headers = {
+			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
+		}
+
+		response_code, response_html, response_headers = self.__GET(url)
+
+		print "==============="
+		print "AWSELB"
+		print url
+		print response_code
+		dictprinter(response_headers)
+
+		if response_code == HTTP_200:
+			self.AWSELB = re.search('''(?<=AWSELB=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
+			print "AWSELB: {0}".format(self.AWSELB)
+
+	def __get_access_token(self):
+		url = "https://accounts.ea.com/connect/auth?client_id=ORIGIN_JS_SDK&response_type=token&redirect_uri=nucleus:rest&prompt=none&release_type=prod"
+
+		headers = {
+			"Cookie": "{0}={1}".format("sid", self.sid)
+		}
+
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
+
+		response_json = json.loads(response_html)
+
+		print "==============="
+		print "access_token"
+		print url
+		print response_code
+		dictprinter(response_headers)
+
+		if response_code == HTTP_200:
+			self.access_token = {
+				"access_token": response_json["access_token"].encode("utf-8"),
+				"token_type": response_json["token_type"].encode("utf-8")
+			}
+			print "token: {0}".format(self.access_token)
+
+	def auth(self):
+
+		location = self.__get_fid()
+
+		location = self.__get_JS_sessionid(location)
+
+		self.__visit_auth_page(location)
+
+		location = self.__post_auth_data(location)
+
+		location = self.__get_sid(location)
+
+		self.__get_AWSELB(location)
+
+		self.__get_access_token()
+
+
+
+
 
 login = "nick_crichton@hotmail.com"
 password = '''Defence123'''
 
-origin.auth(login, password)
+
+origin = Origin(login, password)
+
+origin.auth()
