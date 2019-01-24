@@ -1,0 +1,420 @@
+https://signin.ea.com/p/originX/login?execution=e64665106s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+
+e = document.querySelector("input#cid");
+
+e._cloned_v = e.value;
+
+
+Object.defineProperty(e, 'value', {
+    get: function(){
+		debugger;
+        return e._cloned_v;
+    },
+    set: function(item){
+        debugger;
+        e._cloned_v = item;
+    }});
+
+
+https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/js/sha.v_1547465604-min.js:formatted
+K = "1@1.ruqwe", J = "ASCII"
+p = function(K, J) {
+        this.sha1 = null;
+        this.sha224 = null;
+        this.sha256 = null;
+        this.sha384 = null;
+        this.sha512 = null;
+        this.strBinLen = null;
+        this.strToHash = null;
+        if ("HEX" === J) {
+            if (0 !== (K.length % 2)) {
+                return "TEXT MUST BE IN BYTE INCREMENTS"
+            }
+            this.strBinLen = K.length * 4;
+            this.strToHash = a(K)
+        } else {
+            if (("ASCII" === J) || ("undefined" === typeof (J))) {
+                this.strBinLen = K.length * w; //w=8
+                this.strToHash = E(K) //какой-то хеш
+            } else {
+                return "UNKNOWN TEXT INPUT TYPE"
+            }
+        }
+
+
+https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/js/jquery.originX-pc-login.v_1547465604-min.js:formatted
+
+getCredentialsKey: function(m, j) {
+                    var l = "";
+                    var i = this.getNormalizedKey(m);
+                    var h = this.getNormalizedKey(j);
+                    if (i && h) {
+                        var k = new jsSHA(i + h + window.authenticationJsHelper.currentEnvironment,"ASCII");
+                        l = k.getHash("SHA-512", "HEX") ."84e373996a72900812e5690ec844595b8d455c8eebc07b21a4cb6d85ca65426183105de9b2e89c73783d2327cae8c5a993086871b847dc74e3f9f274e4302901"
+                    }
+                    return l
+                },
+
+https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/js/jquery.originX-pc-login.v_1547465604-min.js:formatted
+
+loginOnline: function(j, h) {
+                    var i = this.getCredentialsKey(j, h);
+                    this.storeKeyedData(j, i); //сохраняют логин и хеш
+                    var k = this.storeCidData(i, this.randomString()); //rand= "wgA0hqvNCfdXEril4nAk80SNUWNM7Qtw"
+                    this.storeOtherLoginValue();
+                    a("#cid").val(k);
+                    a("#showAgeUp").val(window.authenticationJsHelper.showAgeUpFlow);
+                    a("#login-form").submit()
+                },
+
+
+				
+				
+				
+				
+	куки JSESSIONID?
+
+JSESSIONID=637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19; 
+utag_main=v_id:01687fa6c81f007ffeb1c4333f4403071014206900bd0
+_st:1548331663201
+ses_id:1548329863201	
+				
+				
+				
+				
+AUTH		
+
+Здесь нас редиректит
+GET https://accounts.ea.com/connect/auth?response_type=code&client_id=ORIGIN_SPA_ID&display=originXWeb/login&locale=ru_RU&release_type=prod&redirect_uri=https://www.origin.com/views/login.html HTTP/1.1
+Host: accounts.ea.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://www.origin.com/rus/ru-ru/store
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489
+
+HTTP/1.1 302 Found
+X-NEXUS-SEQUENCE: 46.231.211.54:1548329861138
+X-NEXUS-HOSTNAME: prdaccountc-75
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Pragma: no-cache
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: no-cache
+Cache-Control: no-store
+Location: https://signin.ea.com/p/originX/login?fid=RlMwOjEuMDoyLjA6MXRqZllhNHYzWEZ2V2dvOUQ0R2NJNko2Om9qZ2xw
+Content-Length: 0
+Date: Thu, 24 Jan 2019 11:37:40 GMT
+Server: Powered by Electronic Arts
+==================================================================================================
+
+
+Здесь редиректит
+Ставят куки JSESSIONID
+GET https://signin.ea.com/p/originX/login?fid=RlMwOjEuMDoyLjA6MXRqZllhNHYzWEZ2V2dvOUQ0R2NJNko2Om9qZ2xw HTTP/1.1
+Host: signin.ea.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://www.origin.com/rus/ru-ru/store
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; weblastlogin=weblbeooid; pcun="mg@lid-x.ru"
+
+HTTP/1.1 302 Found
+Set-Cookie: JSESSIONID=637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19; Path=/p; Secure; HttpOnly
+X-NEXUS-SEQUENCE: 637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19:46.231.211.54:1548329861918
+X-NEXUS-HOSTNAME: prdaccountc-19
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Cache-Control: no-store
+Location: /p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+Content-Length: 0
+Date: Thu, 24 Jan 2019 11:37:41 GMT
+Server: Powered by Electronic Arts
+==============================================================
+
+
+Страница авторизации
+
+GET https://signin.ea.com/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html HTTP/1.1
+Host: signin.ea.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://www.origin.com/rus/ru-ru/store
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: JSESSIONID=637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19; _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; weblastlogin=weblbeooid; pcun="mg@lid-x.ru"
+
+HTTP/1.1 200 OK
+X-NEXUS-SEQUENCE: 637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19:46.231.211.54:1548329862127
+X-NEXUS-HOSTNAME: prdaccountc-19
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Cache-Control: no-store
+SelfLocation: https://signin.ea.com:443/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+Content-Type: text/html;charset=utf-8
+Vary: Accept-Encoding
+Date: Thu, 24 Jan 2019 11:37:41 GMT
+Server: Powered by Electronic Arts
+Content-Length: 33998
+
+
+
+<!DOCTYPE html>
+
+================================================================
+
+Отправляем логин, пароль, получаем редирект
+
+POST https://signin.ea.com/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html HTTP/1.1
+Host: signin.ea.com
+Connection: keep-alive
+Content-Length: 159
+Cache-Control: max-age=0
+Origin: https://signin.ea.com
+Upgrade-Insecure-Requests: 1
+Content-Type: application/x-www-form-urlencoded
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://signin.ea.com/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: JSESSIONID=637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19; _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; weblastlogin=weblbeooid; pcun="mg@lid-x.ru"; _gat=1; utag_main=v_id:01687fa6c81f007ffeb1c4333f4403071014206900bd0$_sn:1$_ss:1$_st:1548331663201$ses_id:1548329863201%3Bexp-session$_pn:1%3Bexp-session
+
+email=nick_crichton%40hotmail.com&password=Defence123&_eventId=submit&cid=qkXJrFfNAXrNxB0dbsq70SFvJgJSRiMb&showAgeUp=true&googleCaptchaResponse=&_rememberMe=on	
+				
+				
+				
+HTTP/1.1 200 OK
+X-NEXUS-SEQUENCE: 637E0739DC0BF9052C292BD42B218BA4.prdaccountc-19:46.231.211.54:1548329896792
+X-NEXUS-HOSTNAME: prdaccountc-19
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Cache-Control: no-store
+Set-Cookie: weblastlogin=weblbeooid; Version=1; Max-Age=604800; Expires=Thu, 31-Jan-2019 11:38:16 GMT; Path=/; Secure; HttpOnly
+Set-Cookie: webun="nick_crichton@hotmail.com"; Version=1; Max-Age=604800; Expires=Thu, 31-Jan-2019 11:38:16 GMT; Path=/; Secure; HttpOnly
+Set-Cookie: _nx_mpcid=dbbf8fa0-1d6b-4646-8b74-6a302eb11475; Version=1; Domain=.ea.com; Max-Age=155520000; Expires=Fri, 29-Dec-2023 11:38:16 GMT; Path=/; Secure; HttpOnly
+Content-Type: text/html;charset=utf-8
+Vary: Accept-Encoding
+Date: Thu, 24 Jan 2019 11:38:16 GMT
+Server: Powered by Electronic Arts
+Content-Length: 4841
+
+
+<html>
+<head>
+    <title>EA Network</title>
+        <script type="text/javascript" src="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/ui/core/js/jquery-1.8.3.min.v_1547465606.js"></script>
+        <script type="text/javascript" src="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/js/jquery.originX-pc-common.v_1547465604-min.js"></script>
+        <script type="text/javascript" src="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/pc/js/sha.v_1547465604-min.js"></script>
+    <link rel="shortcut icon" href="/p/favicon.ico"/>
+    <script type="text/javascript">
+        function doRedirectInit(){
+            //call redirect either way because we don't want to hang if connetion with webchannel fails
+            originWrapper.wrapWithWebChannel().then(doRedirect).catch(doRedirect);
+        }
+        function doRedirect() {
+            var originId = "Sho77az99";
+            var lowerCasedOriginId = originId.toLowerCase();
+            var email = "nick_crichton@hotmail.com";
+            var loginSource =  "email";
+            var credential = "Defence123";
+            if (loginSource == "email") {
+                setLocalStorageItem("latestSuccessLogin", email);
+                if (lowerCasedOriginId && credential) {
+                    var originIdKey = getCredentialsKey(lowerCasedOriginId, credential);
+                    setLocalStorageItem(lowerCasedOriginId, originIdKey);
+                    setLocalStorageItem(originIdKey, getLocalStorageItem(getLocalStorageItem(email)));
+                }
+            } else if (loginSource == "origin_id") {
+                setLocalStorageItem("latestSuccessLogin", lowerCasedOriginId);
+                if (email && credential) {
+                    var emailKey = getCredentialsKey(email, credential);
+                    setLocalStorageItem(email, emailKey);
+                    setLocalStorageItem(emailKey, getLocalStorageItem(getLocalStorageItem(lowerCasedOriginId)));
+                }
+            } else {
+                setLocalStorageItem("latestSuccessLogin", null);
+            }
+            removeLocalStorageItem("oldKey");
+            window.location = "https://accounts.ea.com:443/connect/auth?response_type=code&client_id=ORIGIN_SPA_ID&display=originXWeb%2Flogin&locale=ru_RU&release_type=prod&redirect_uri=https%3A%2F%2Fwww.origin.com%2Fviews%2Flogin.html&fid=RlMwOjEuMDoyLjA6MXRqZllhNHYzWEZ2V2dvOUQ0R2NJNko2Om9qZ2xw";
+        }
+
+        function getCredentialsKey(id, password) {
+            if (typeof window.authenticationJsHelper === "undefined") {
+                console.log('authenticaitonJShelper undefined');
+                window.authenticationJsHelper = {};
+                window.authenticationJsHelper.currentEnvironment = "";
+            }
+            var key = "";
+            var normalizedId = getNormalizedKey(id);
+            var normalizedPassword = getNormalizedKey(password);
+            if (normalizedId && normalizedPassword) {
+                console.log('[[ env ='+window.authenticationJsHelper.currentEnvironment);
+                var shaObj = new jsSHA(normalizedId + normalizedPassword + window.authenticationJsHelper.currentEnvironment, "ASCII");
+                key = shaObj.getHash("SHA-512", "HEX");
+            }
+            return key;
+        }
+
+        function setLocalStorageItem(key, value) {
+            localStorage.setItem(getNormalizedKey(key), value);
+        }
+        function getLocalStorageItem(key) {
+            return localStorage.getItem(getNormalizedKey(key));
+        }
+        function removeLocalStorageItem(key) {
+            localStorage.removeItem(getNormalizedKey(key));
+        }
+        function getNormalizedKey(key) {
+            return $.trim(key);
+        }
+    </script>
+
+                <link rel="stylesheet" type="text/css" href="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/css/otk.v_1547465604-min.css"/>
+                <link rel="stylesheet" type="text/css" href="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/css/originX-pc-common.v_1547465604-min.css"/>
+                <link rel="stylesheet" type="text/css" href="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/css/originX-pc-login.v_1547465604-min.css"/>
+                <link rel="stylesheet" type="text/css" href="https://eaassets-a.akamaihd.net/resource_signin_ea_com/541.0.190114084.2755b5bae4/p/statics/originX/css/originX-pc-login_ru.v_1547465604-min.css"/>
+</head>
+<body onload="doRedirectInit()">
+<div id="login-container-end" class="form-container">
+    <div id="pc-content-login" class="panel">
+    </div>
+</div>
+</body>
+</html>				
+				
+				
+				
+==================================================================
+
+Редирект
+
+GET https://accounts.ea.com/connect/auth?response_type=code&client_id=ORIGIN_SPA_ID&display=originXWeb%2Flogin&locale=ru_RU&release_type=prod&redirect_uri=https%3A%2F%2Fwww.origin.com%2Fviews%2Flogin.html&fid=RlMwOjEuMDoyLjA6MXRqZllhNHYzWEZ2V2dvOUQ0R2NJNko2Om9qZ2xw HTTP/1.1
+Host: accounts.ea.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://signin.ea.com/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; _gat=1; utag_main=v_id:01687fa6c81f007ffeb1c4333f4403071014206900bd0$_sn:1$_ss:1$_st:1548331663201$ses_id:1548329863201%3Bexp-session$_pn:1%3Bexp-session; _nx_mpcid=dbbf8fa0-1d6b-4646-8b74-6a302eb11475
+		
+				
+				
+				
+HTTP/1.1 302 Found
+X-NEXUS-SEQUENCE: 46.231.211.54:1548329897601
+X-NEXUS-HOSTNAME: prdaccountc-40
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Pragma: no-cache
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: no-cache
+Cache-Control: no-store
+Set-Cookie: sid=U1N2ckQwc29KRTM3VnNXTFNuQW9kYVhKYmlFR251RThRQnA1WkdRR1c2Wmsxbm56RHhjcGtndWszY2hXUg.Hjd1CezYwPuvJX7jrdhjQY1TSTlvpc3FSxnXdmk4kFU; Version=1; Path=/connect; Secure; HttpOnly
+Set-Cookie: remid=""; Version=1; Max-Age=0; Expires=Thu, 01-Jan-1970 00:00:10 GMT; Path=/connect
+Location: https://www.origin.com/views/login.html?code=QUOQANW2il0FwQGMDCbG12yl7WbbvAoFyQ9O6mQh
+Content-Length: 0
+Date: Thu, 24 Jan 2019 11:38:16 GMT
+Server: Powered by Electronic Arts
+
+======================================================================
+				
+				
+				
+GET https://www.origin.com/views/login.html?code=QUOQANW2il0FwQGMDCbG12yl7WbbvAoFyQ9O6mQh HTTP/1.1
+Host: www.origin.com
+Connection: keep-alive
+Upgrade-Insecure-Requests: 1
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8
+Referer: https://signin.ea.com/p/originX/login?execution=e1626377084s1&initref=https%3A%2F%2Faccounts.ea.com%3A443%2Fconnect%2Fauth%3Fresponse_type%3Dcode%26client_id%3DORIGIN_SPA_ID%26display%3DoriginXWeb%252Flogin%26locale%3Dru_RU%26release_type%3Dprod%26redirect_uri%3Dhttps%253A%252F%252Fwww.origin.com%252Fviews%252Flogin.html
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: iq=lcg; _ga=GA1.2.6aa0b6cb-0e37-4506-b525-b7fbc98a9329; _gid=GA1.2.953397491.1548329802; utag_main=v_id:01687fa5d98400878d17bdfdcaf803071002606900bd0$_sn:1$_ss:1$_st:1548331602117$ses_id:1548329802117%3Bexp-session$_pn:1%3Bexp-session
+
+
+				
+HTTP/1.1 200 OK
+Accept-Ranges: bytes
+Content-Type: text/html
+ETag: "197-57ee27dedd300-gzip"
+Last-Modified: Mon, 07 Jan 2019 18:35:24 GMT
+Server: Apache
+X-Frame-Options: SAMEORIGIN
+X-Origin-Ops: kjWAzOuA1XDBSukqaX2vP6AfkERRG2wQ1Ocy32tDKlc=%0A
+Content-Length: 407
+Cache-Control: public, no-cache
+Date: Thu, 24 Jan 2019 11:38:18 GMT
+Connection: keep-alive
+Vary: Accept-Encoding
+Set-Cookie: AWSELB=2FAFF949026E69DC0DC19203AA11597BE14F279F4F952839485EF76F4F9C0E6DC0D70A444800616EC4A03519E4011EF9A8923E4760653F84F2BAEFFA7655FA3FE8666679A4;PATH=/
+Strict-Transport-Security: max-age=7776000
+Link: <https://api4.origin.com>; rel=preconnect
+Link: <https://api3.origin.com>; rel=preconnect
+Link: <https://api2.origin.com>; rel=preconnect
+Link: <https://api1.origin.com>; rel=preconnect
+Link: <https://data4.origin.com>; rel=preconnect
+Link: <https://data3.origin.com>; rel=preconnect
+Link: <https://data2.origin.com>; rel=preconnect
+Link: <https://data1.origin.com>; rel=preconnect
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <title></title>        
+    </head>
+    <body>
+        <script type="text/javascript">
+            (function() {
+                var win = window.opener;
+                if (win && win.loginCompleteCallback) {
+                    win.loginCompleteCallback();
+                }
+                window.close(); 
+            })();
+        </script>
+    </body>
+</html>				
+				
+==============================================================================================			
+				
+
+				
+GET https://accounts.ea.com/connect/auth?client_id=ORIGIN_JS_SDK&response_type=token&redirect_uri=nucleus:rest&prompt=none&release_type=prod HTTP/1.1
+Host: accounts.ea.com
+Connection: keep-alive
+Origin: https://www.origin.com
+User-Agent: Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36
+Accept: */*
+Referer: https://www.origin.com/rus/ru-ru/store
+Accept-Encoding: gzip, deflate, br
+Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+Cookie: sid=U1N2ckQwc29KRTM3VnNXTFNuQW9kYVhKYmlFR251RThRQnA1WkdRR1c2Wmsxbm56RHhjcGtndWszY2hXUg.Hjd1CezYwPuvJX7jrdhjQY1TSTlvpc3FSxnXdmk4kFU; _ga=GA1.2.1360172584.1548314489; _gid=GA1.2.1700274289.1548314489; _gat=1; utag_main=v_id:01687fa6c81f007ffeb1c4333f4403071014206900bd0$_sn:1$_ss:1$_st:1548331663201$ses_id:1548329863201%3Bexp-session$_pn:1%3Bexp-session; _nx_mpcid=dbbf8fa0-1d6b-4646-8b74-6a302eb11475
+
+
+				
+				
+HTTP/1.1 200 OK
+X-NEXUS-SEQUENCE: 46.231.211.54:1548329898989
+X-NEXUS-HOSTNAME: prdaccountc-02
+Access-Control-Allow-Origin: https://www.origin.com
+Access-Control-Allow-Credentials: true
+P3P: CP="ALL DSP COR IVD IVA PSD PSA TEL TAI CUS ADM CUR CON SAM OUR IND"
+Pragma: no-cache
+Expires: Thu, 01 Jan 1970 00:00:00 GMT
+Cache-Control: no-cache
+Cache-Control: no-store
+Set-Cookie: sid=U1N2ckQwc29KRTM3VnNXTFNuQW9kYVhKYmlFR251RThRQnA1WkdRR1c2Wmsxbm56RHhjcGtndWszY2hXUg.Hjd1CezYwPuvJX7jrdhjQY1TSTlvpc3FSxnXdmk4kFU; Version=1; Path=/connect; Secure; HttpOnly
+Content-Length: 144
+Date: Thu, 24 Jan 2019 11:38:18 GMT
+Server: Powered by Electronic Arts
+
+{"access_token":"QVQwOjEuMDozLjA6NjA6RDZVMnM3N3JuUGY2SkkxTnJucFVOODE5a0JrNEhMaG5BSWI6NDY4MDU6b2pnbHE","token_type":"Bearer","expires_in":"3599"}
+
+
+				
