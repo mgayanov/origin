@@ -23,7 +23,7 @@ class Origin():
 
 	def GET(self, url, params=None, headers=None):
 
-		response = requests.get(url, params=params, headers=headers)
+		response = requests.get(url, params=params, headers=headers, allow_redirects=False)
 
 		response_code = response.status_code
 		response_headers = response.headers
@@ -63,7 +63,7 @@ class Origin():
 
 		#data = urllib.urlencode(values)
 
-		#req = urllib2.Request(url, data)#, headers)
+		#req = urllib2.Request(url, data, headers)
 
 		#response = urllib2.urlopen(req)
 
@@ -76,13 +76,13 @@ class Origin():
 		#response_code, response_html, response_headers = self.GET(url, headers=headers)
 		#decompressed_data = zlib.decompress(response_html, 16 + zlib.MAX_WBITS)
 
-		#print("response_code: {0} response_html: {1}".format(response_code, response_html.encode("utf-8")))
+		print("response_code: {0} response_html: {1}".format(response_code, response_html.encode("utf-8")))
 
 		dictprinter(response_headers)
 
-		fid = re.search('''(?<=login\?fid=)\S+?(?=&)''', response_html)
+		#fid = re.search('''(?<=login\?fid=)\S+?(?=&)''', response_html)
 
-		print fid.group(0)
+		#print fid.group(0)
 
 		'''
 		code, html, headers = self.GET(self.auth_url)
