@@ -7,7 +7,6 @@ import json
 from random import randint
 
 HTTP_200 = 200
-
 HTTP_302 = 302
 
 def dictprinter(d):
@@ -20,10 +19,14 @@ def random_string(length):
 
 class Origin():
 
-	fid = None
-	jssessionid = None
+	fid          = None
+	jssessionid  = None
+	sid          = None
+	code         = None
+	AWSELB       = None
+	access_token = None
 
-	user_agent = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
+	user_agent  = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
 
 	def __init__(self, login, password):
 		self.login = login
@@ -32,26 +35,29 @@ class Origin():
 
 	def __GET(self, url, params=None, headers=None):
 
-		if headers is None:
-			headers = {}
+		headers = headers or {}
 
 		headers["User-Agent"] = self.user_agent
 
 		response = requests.get(url, params=params, headers=headers, allow_redirects=False)
 
-		response_code = response.status_code
+		response_code    = response.status_code
 		response_headers = response.headers
-		response_html = response.text
+		response_html    = response.text
 
 		return response_code, response_html, response_headers
 
 	def __POST(self, url, data=None, headers=None):
 
+		headers = headers or {}
+
+		headers["User-Agent"] = self.user_agent
+
 		response = requests.post(url, data=data, headers=headers)
 
-		response_code = response.status_code
+		response_code    = response.status_code
 		response_headers = response.headers
-		response_html = response.text
+		response_html    = response.text
 
 		return response_code, response_html, response_headers
 
@@ -72,14 +78,8 @@ class Origin():
 
 		response_code, response_html, response_headers = self.__GET(url)
 
-		print "==============="
-		print "jssession"
-		print url
-		print response_code
-		dictprinter(response_headers)
-
 		if response_code == HTTP_302:
-			self.jssessionid = re.search("(?<=JSESSIONID=)[\S]+?(?=;)", response_headers["Set-Cookie"]).group(0)
+			self.jssessionid = re.search('''(?<=JSESSIONID=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
 			return "{0}{1}".format("https://signin.ea.com", response_headers["Location"])
 		else:
 			pass
@@ -93,14 +93,8 @@ class Origin():
 
 		response_code, response_html, response_headers = self.__GET(url, headers=headers)
 
-		print "==============="
-		print "visit auth page"
-		print url
-		print response_code
-		dictprinter(response_headers)
-
 		if response_code == HTTP_302:
-			self.jssessionid = re.search("(?<=JSESSIONID=)[\S]+?(?=;)", response_headers["Set-Cookie"]).group(0)
+			self.jssessionid = re.search('''(?<=JSESSIONID=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
 			return response_headers["Location"]
 
 
@@ -123,38 +117,18 @@ class Origin():
 
 		response_code, response_html, response_headers = self.__POST(url, data=payload, headers=headers)
 
-		print "==============="
-		print "post auth data"
-		print url
-		print response_code
-		dictprinter(response_headers)
-		#print response_html
-
 		if response_code == HTTP_200:
 			location = re.search('''(?<=window\.location = \")\S+(?=\";)''', response_html).group(0)
-			print location
 			return location
 
 	def __get_sid(self, location):
 		url = location
 
-		headers = {
-			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
-		}
-
 		response_code, response_html, response_headers = self.__GET(url)
-
-		print "==============="
-		print "sid"
-		print url
-		print response_code
-		dictprinter(response_headers)
 
 		if response_code == HTTP_302:
 			self.sid = re.search('''(?<=sid=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
 			self.code = urlparse.parse_qs(response_headers["Location"][response_headers["Location"].index("?") + 1:])['code'][0]
-			print "sid: {0}".format(self.sid)
-			print "code: {0}".format(self.code)
 			return response_headers["Location"]
 		else:
 			pass
@@ -162,21 +136,10 @@ class Origin():
 	def __get_AWSELB(self, location):
 		url = location
 
-		headers = {
-			"Cookie": "{0}={1}".format("JSESSIONID", self.jssessionid)
-		}
-
 		response_code, response_html, response_headers = self.__GET(url)
-
-		print "==============="
-		print "AWSELB"
-		print url
-		print response_code
-		dictprinter(response_headers)
 
 		if response_code == HTTP_200:
 			self.AWSELB = re.search('''(?<=AWSELB=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
-			print "AWSELB: {0}".format(self.AWSELB)
 
 	def __get_access_token(self):
 		url = "https://accounts.ea.com/connect/auth?client_id=ORIGIN_JS_SDK&response_type=token&redirect_uri=nucleus:rest&prompt=none&release_type=prod"
@@ -189,11 +152,7 @@ class Origin():
 
 		response_json = json.loads(response_html)
 
-		print "==============="
-		print "access_token"
-		print url
-		print response_code
-		dictprinter(response_headers)
+		print(response_json)
 
 		if response_code == HTTP_200:
 			self.access_token = {
@@ -217,10 +176,6 @@ class Origin():
 		self.__get_AWSELB(location)
 
 		self.__get_access_token()
-
-
-
-
 
 login = "nick_crichton@hotmail.com"
 password = '''Defence123'''
