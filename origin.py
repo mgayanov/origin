@@ -167,10 +167,9 @@ class Origin():
 
 		if response_code == HTTP_200:
 			self.access_token = {
-				"access_token": response_json["access_token"].encode("utf-8"),
-				"token_type": response_json["token_type"].encode("utf-8")
+				"access_token": response_json["access_token"],
+				"token_type": response_json["token_type"]
 			}
-			print "token: {0}".format(self.access_token)
 
 	def auth(self):
 
