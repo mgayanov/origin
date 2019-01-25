@@ -212,6 +212,19 @@ class Origin():
 		print(response_html)
 		dictprinter(response_headers)
 
+	def get_games(self, userid):
+		url = "https://api4.origin.com/ecommerce2/consolidatedentitlements/{0}?machine_hash=1".format(userid)
+
+		headers = {
+			"AuthToken": "{0}".format(self.access_token["access_token"]),
+			"Accept": "application/vnd.origin.v3+json; x-cache/force-write"
+		}
+
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
+
+		print(response_code)
+		print(response_html)
+		dictprinter(response_headers)
 
 
 	def users(self, userid):
@@ -232,8 +245,8 @@ class Origin():
 
 
 
-login = "jdatforever@hotmail.com"
-password = '''Jerome17'''
+login = "nick_crichton@hotmail.com"
+password = '''Defence123'''
 
 
 origin = Origin(login, password)
@@ -247,3 +260,5 @@ print(origin.__dict__)
 #origin.access_token["token_type"] = "QVQxOjEuMDozLjA6NjA6OE1oRlRBZXI2MmI3aHpMWlNiUjY2RUNnZ0NwU09uaTV0b3o6NTk2Mzg6b2ppMDk"
 
 origin.get_userid()
+
+origin.get_games("2258446805")
