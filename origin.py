@@ -1,8 +1,5 @@
 import requests
 import re
-import urllib
-import urllib2
-import urlparse
 import json
 from random import randint
 
@@ -82,7 +79,7 @@ class Origin():
 		response_code, response_html, response_headers = self.__GET(url)
 
 		if response_code == HTTP_302:
-			self.fid = urlparse.parse_qs(response_headers["Location"][response_headers["Location"].index("?")+1:])['fid'][0]
+			self.fid = re.search('''(?<=fid=)[a-zA-Z0-9]+?(?=&|$)''', response_headers["Location"]).group(0)
 			return response_headers["Location"]
 		else:
 			pass
@@ -142,7 +139,7 @@ class Origin():
 
 		if response_code == HTTP_302:
 			self.sid = re.search('''(?<=sid=)[\S]+?(?=;)''', response_headers["Set-Cookie"]).group(0)
-			self.code = urlparse.parse_qs(response_headers["Location"][response_headers["Location"].index("?") + 1:])['code'][0]
+			self.code = re.search('''(?<=code=)[\S]+?(?=&|$)''', response_headers["Location"]).group(0)
 			return response_headers["Location"]
 		else:
 			pass
@@ -236,14 +233,18 @@ class Origin():
 
 
 
-login = "nick_crichton@hotmail.com"
-password = '''Defence123'''
+login = "jdatforever@hotmail.com"
+password = '''Jerome17'''
 
 
 origin = Origin(login, password)
 
 origin.auth()
 
+print(origin.__dict__)
+
 #origin.view_profile()
+
+#origin.access_token["token_type"] = "QVQxOjEuMDozLjA6NjA6OE1oRlRBZXI2MmI3aHpMWlNiUjY2RUNnZ0NwU09uaTV0b3o6NTk2Mzg6b2ppMDk"
 
 origin.get_userid()
