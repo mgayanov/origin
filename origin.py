@@ -25,6 +25,7 @@ class Origin():
 	code         = None
 	AWSELB       = None
 	access_token = None
+	userid       = None
 
 	user_agent  = "Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/71.0.3578.98 Safari/537.36"
 
@@ -200,9 +201,22 @@ class Origin():
 
 		response_code, response_html, response_headers = self.__GET(url, headers=headers)
 
+	def get_userid(self):
+		url = "https://gateway.ea.com/proxy/identity/pids/me"
+
+		self.__OPTIONS(url)
+
+		headers = {
+			"Authorization": "{0} {1}".format(self.access_token["token_type"], self.access_token["access_token"])
+		}
+
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
+
 		print(response_code)
 		print(response_html)
 		dictprinter(response_headers)
+
+
 
 	def users(self, userid):
 		url = "https://api3.origin.com/atom/users?userIds={}".format(userid)
@@ -232,4 +246,4 @@ origin.auth()
 
 #origin.view_profile()
 
-origin.users("2258446805")
+origin.get_userid()
