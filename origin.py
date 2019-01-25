@@ -61,6 +61,19 @@ class Origin():
 
 		return response_code, response_html, response_headers
 
+	def __OPTIONS(self, url, headers=None):
+
+		headers = headers or {}
+
+		headers["User-Agent"] = self.user_agent
+
+		response = requests.options(url, headers=headers)
+
+		response_code = response.status_code
+		response_headers = response.headers
+		response_html = response.text
+
+		return response_code, response_html, response_headers
 
 	def __get_fid(self):
 		url = "https://accounts.ea.com/connect/auth?response_type=code&client_id=ORIGIN_SPA_ID&display=originXWeb/login&locale=ru_RU&release_type=prod&redirect_uri=https://www.origin.com/views/login.html"
@@ -177,6 +190,38 @@ class Origin():
 
 		self.__get_access_token()
 
+
+	def view_profile(self):
+		url = "https://www.origin.com/views/profile.html"
+
+		headers = {
+			"AWSELB": "{0}={1}".format("AWSELB", self.AWSELB)
+		}
+
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
+
+		print(response_code)
+		print(response_html)
+		dictprinter(response_headers)
+
+	def users(self, userid):
+		url = "https://api3.origin.com/atom/users?userIds={}".format(userid)
+
+		response_code, response_html, response_headers = self.__OPTIONS(url)
+
+		headers = {
+			"AuthToken": self.access_token["access_token"]
+		}
+
+		response_code, response_html, response_headers = self.__GET(url, headers=headers)
+
+		print(response_code)
+		print(response_html)
+		dictprinter(response_headers)
+
+
+
+
 login = "nick_crichton@hotmail.com"
 password = '''Defence123'''
 
@@ -184,3 +229,7 @@ password = '''Defence123'''
 origin = Origin(login, password)
 
 origin.auth()
+
+#origin.view_profile()
+
+origin.users("2258446805")
